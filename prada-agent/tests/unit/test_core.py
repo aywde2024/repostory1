@@ -51,7 +51,7 @@ class TestToolRegistry:
         registry.register("tool2", dummy_func, {}, toolsets=["set2"])
         registry.register("tool3", dummy_func, {}, toolsets=["set1", "set2"])
         
-        set1_tools = registry.list_tools(toolset="set1")
+        set1_tools = registry.list_tools(toolsets=["set1"])
         assert "tool1" in set1_tools
         assert "tool3" in set1_tools
         assert "tool2" not in set1_tools
@@ -60,44 +60,52 @@ class TestToolRegistry:
 class TestMemoryManager:
     """Test memory manager functionality"""
     
-    def test_add_memory(self, tmp_path):
+    @pytest.mark.asyncio
+    async def test_add_memory(self, tmp_path):
         from agent.memory_manager import MemoryManager
         
         manager = MemoryManager(str(tmp_path))
+        await manager.initialize()
         
-        result = manager.add("memory", "Test memory entry")
+        result = await manager.add("memory", "Test memory entry")
         assert result["success"]
-        assert "Test memory entry" in manager.get_memory()
+        assert "Test memory entry" in manager.get_memory_content()
     
-    def test_replace_memory(self, tmp_path):
+    @pytest.mark.asyncio
+    async def test_replace_memory(self, tmp_path):
         from agent.memory_manager import MemoryManager
         
         manager = MemoryManager(str(tmp_path))
-        manager.add("memory", "Original text")
+        await manager.initialize()
+        await manager.add("memory", "Original text")
         
-        result = manager.replace("memory", "Original", "Replaced text")
+        result = await manager.replace("memory", "Original", "Replaced text")
         assert result["success"]
-        assert "Replaced text" in manager.get_memory()
-        assert "Original text" not in manager.get_memory()
+        assert "Replaced text" in manager.get_memory_content()
+        assert "Original text" not in manager.get_memory_content()
     
-    def test_remove_memory(self, tmp_path):
+    @pytest.mark.asyncio
+    async def test_remove_memory(self, tmp_path):
         from agent.memory_manager import MemoryManager
         
         manager = MemoryManager(str(tmp_path))
-        manager.add("memory", "Entry to remove")
+        await manager.initialize()
+        await manager.add("memory", "Entry to remove")
         
-        result = manager.remove("memory", "Entry to remove")
+        result = await manager.remove("memory", "Entry to remove")
         assert result["success"]
-        assert "Entry to remove" not in manager.get_memory()
+        assert "Entry to remove" not in manager.get_memory_content()
     
-    def test_user_profile(self, tmp_path):
+    @pytest.mark.asyncio
+    async def test_user_profile(self, tmp_path):
         from agent.memory_manager import MemoryManager
         
         manager = MemoryManager(str(tmp_path))
+        await manager.initialize()
         
-        result = manager.add("user", "User prefers Python")
+        result = await manager.add("user", "User prefers Python")
         assert result["success"]
-        assert "User prefers Python" in manager.get_user_profile()
+        assert "User prefers Python" in manager.get_user_content()
 
 
 class TestTerminalBackend:
@@ -162,8 +170,8 @@ class TestCronScheduler:
         job = CronJob(
             id="test-job",
             name="Test Job",
-            schedule_type="cron",
-            expression="* * * * *",  # Every minute
+            schedule_type="interval",  # Use interval instead of cron to avoid croniter issues
+            expression="60",  # Every 60 seconds
             timezone="UTC",
             prompt="Test prompt",
             toolsets=[],

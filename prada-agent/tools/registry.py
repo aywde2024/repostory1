@@ -235,7 +235,21 @@ class ToolRegistry:
         
         return result
     
-    def list_tools(self, toolsets: Optional[List[str]] = None) -> List[dict]:
+    def list_tools(self, toolsets: Optional[List[str]] = None) -> List[str]:
+        """List all registered tool names"""
+        result = []
+        
+        for name, tool in self._tools.items():
+            # Filter by toolsets if specified
+            if toolsets:
+                if not any(ts in toolsets for ts in tool["toolsets"]):
+                    continue
+            
+            result.append(name)
+        
+        return result
+    
+    def list_tools_with_metadata(self, toolsets: Optional[List[str]] = None) -> List[dict]:
         """List all registered tools with metadata"""
         result = []
         
