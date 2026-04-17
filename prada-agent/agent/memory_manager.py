@@ -25,7 +25,9 @@ class MemoryManager:
     - Automatic entry separation with § delimiter
     """
     
-    def __init__(self, prada_home: Path):
+    def __init__(self, prada_home):
+        if isinstance(prada_home, str):
+            prada_home = Path(prada_home)
         self.prada_home = prada_home
         self.memories_dir = prada_home / "memories"
         self.memory_file = self.memories_dir / "MEMORY.md"

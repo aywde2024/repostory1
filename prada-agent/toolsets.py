@@ -67,8 +67,7 @@ TOOLSETS = {
     "cron": ["cron_list", "cron_create", "cron_delete"],
 }
 
-
-# Default combinations by platform
+# Merge platform presets into TOOLSETS for unified access
 PLATFORM_TOOLSET_PRESETS = {
     "hermes-cli": ["core", "file", "terminal", "web", "code", "delegate", "skills", "memory_ops"],
     "hermes-telegram": ["core", "file", "terminal", "web", "delivery", "skills"],
@@ -89,6 +88,11 @@ PLATFORM_TOOLSET_PRESETS = {
     "hermes-webhook": ["core", "file", "web", "delivery"],
     "hermes-api-server": ["core", "file", "terminal", "web", "code", "delegate", "skills", "memory_ops", "vision"],
 }
+
+# Add platform presets to TOOLSETS with prada- prefix for unified access
+for platform, toolsets in PLATFORM_TOOLSET_PRESETS.items():
+    prada_key = platform.replace("hermes-", "prada-")
+    TOOLSETS[prada_key] = toolsets
 
 
 def get_toolset_tools(toolset_name: str) -> list:
