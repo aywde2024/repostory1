@@ -20,7 +20,7 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 
 | Module | Status | Tests | Description |
 |--------|--------|-------|-------------|
-| **Tool Registry** | ✅ Complete | 9/9 passing | Auto-discovery, 27 tools registered |
+| **Tool Registry** | ✅ Complete | 9/9 passing | Auto-discovery, 35 tools registered |
 | **Memory Manager** | ✅ Complete | 8/8 passing | MEMORY.md/USER.md with add/replace/remove |
 | **Terminal Backends** | ✅ Complete | 4/4 passing | Local, Docker, SSH, Modal, Daytona, Singularity |
 | **File Tools** | ✅ Complete | 5/5 passing | read_file, write_file, patch, search_files, list_dir |
@@ -30,6 +30,10 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 | **Vision Tools** | ✅ Complete | New | image_analyze, image_generate, audio_transcribe, audio_speak |
 | **MCP Tools** | ✅ Complete | New | mcp_list_tools, mcp_call_tool, mcp_list_resources |
 | **Delegate Tools** | ✅ Complete | New | delegate, subagent_status, subagent_cancel |
+| **Credential Tools** | ✅ Complete | New | credential_files (secure file management) |
+| **Memory Tools** | ✅ Complete | New | memory_add, memory_replace, memory_remove |
+| **Skill Tools** | ✅ Complete | New | skills_list, skill_view, skill_manage |
+| **Session Tools** | ✅ Complete | New | session_list, session_search, session_compress |
 | **Cron Scheduler** | ✅ Complete | 3/3 passing | cron/interval/once scheduling |
 | **Batch Runner** | ✅ Complete | New | Trajectory generation for training data |
 | **Trajectory Compressor** | ✅ Complete | New | Lossy compression for token budget |
@@ -43,14 +47,14 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 
 ```bash
 $ pytest tests/unit -v
-============================== 37 passed in 1.68s ==============================
+============================== 37 passed in 1.83s ==============================
 ```
 
 ### Project Statistics
 
-- **Python Files**: 42
-- **Total Lines**: 9,714
-- **Tools**: 27 (file: 5, web: 3, browser: 10, code: 3, vision: 4, MCP: 3, delegate: 3)
+- **Python Files**: 46
+- **Total Lines**: 10,420
+- **Tools**: 35 (file: 5, web: 3, browser: 10, code: 3, vision: 4, MCP: 3, delegate: 3, credential: 1, memory: 3, skill: 3, session: 3)
 - **Terminal Backends**: 6/6 complete
 - **Platform Adapters**: 7/18 implemented
 - **Unit Tests**: 37 passing (100%)
@@ -272,7 +276,83 @@ prada batch compress \
   --target-tokens 4096
 ```
 
-## 🛡️ Security
+## 🐛 Bug Fixes and Issues
+
+### Fixed Bugs
+
+| Bug | Status | Description |
+|-----|--------|-------------|
+| Missing `croniter` dependency | ✅ Fixed | Added to pyproject.toml dependencies |
+| Missing credential_files tool module | ✅ Fixed | Created tools/credential_files.py |
+| Missing memory_tools module | ✅ Fixed | Created tools/memory_tools.py |
+| Missing skill_tools module | ✅ Fixed | Created tools/skill_tools.py |
+| Missing session_tools module | ✅ Fixed | Created tools/session_tools.py |
+
+### Known Issues
+
+| Issue | Priority | Description |
+|-------|----------|-------------|
+| AIAgent approval callback | Medium | `_request_approval()` needs proper callback implementation for gateway platforms |
+| ChatCompletionsClient missing | Low | Agent client adapters need full implementation |
+| ResponsesClient missing | Low | xAI/OpenAI Responses API adapter needed |
+| AnthropicClient missing | Low | Anthropic Messages API adapter needed |
+
+## 🔜 Remaining Work
+
+### High Priority
+
+1. **Remaining 11 Platform Adapters** (~2000 lines)
+   - SMS (Twilio)
+   - Mattermost
+   - Matrix
+   - DingTalk/钉钉
+   - WeCom/企业微信
+   - Weixin/微信
+   - BlueBubbles (iMessage)
+   - QQBot (OneBot)
+   - Webhook (generic)
+   - API Server (OpenAI-compatible REST)
+   - Home Assistant
+
+2. **Remaining 5 External Memory Providers** (~800 lines)
+   - hindsight (event timeline)
+   - holographic (multimodal vector)
+   - retaindb (relational SQL)
+   - byterover (binary/code index)
+   - supermemory (hybrid)
+
+3. **CLI Subcommands Extension**
+   - `prada sessions search` - Full-text session search
+   - `prada usage` - Token usage statistics
+   - `prada insights` - Usage analytics
+   - `prada doctor` - System health check
+   - `prada logs` - Log tailing and filtering
+
+4. **Integration/E2E Tests**
+   - Integration tests with mock credentials
+   - E2E tests for critical workflows
+
+### Medium Priority
+
+5. **AIAgent Enhancement**
+   - Complete LLM client implementations (ChatCompletionsClient, ResponsesClient, AnthropicClient)
+   - Multi-turn conversation optimization
+   - Context window management improvements
+
+6. **ACP Adapter** (VS Code/Zed/JetBrains integration)
+
+7. **MCP Client Full Implementation**
+
+### Low Priority
+
+8. **Documentation**
+   - User guide with examples
+   - Best practices
+   - Troubleshooting guide
+
+9. **Performance Optimization**
+   - Tool execution parallelization
+   - Memory caching improvements
 
 ### Command Approval System
 
