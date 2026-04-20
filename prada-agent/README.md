@@ -34,7 +34,7 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 | **Batch Runner** | ✅ Complete | New | Trajectory generation for training data |
 | **Trajectory Compressor** | ✅ Complete | New | Lossy compression for token budget |
 | **Gateway Core** | ✅ Complete | 4/4 passing | SessionStore, PlatformAdapter ABC |
-| **Platform Adapters** | 🟡 Partial | 6 implemented | Telegram, Discord, Slack, WhatsApp, Signal, Email |
+| **Platform Adapters** | 🟡 Partial | 7 implemented | Telegram, Discord, Slack, WhatsApp, Signal, Email, Feishu |
 | **Provider Resolver** | ✅ Complete | Tested | 18 LLM providers, 3 API modes |
 | **Skill System** | ✅ Complete | Tested | SKILL.md spec, progressive disclosure |
 | **External Memory** | 🟡 Partial | 3 providers | mem0, honcho, openviking |
@@ -48,11 +48,11 @@ $ pytest tests/unit -v
 
 ### Project Statistics
 
-- **Python Files**: 41
-- **Total Lines**: 9,216
+- **Python Files**: 42
+- **Total Lines**: 9,714
 - **Tools**: 27 (file: 5, web: 3, browser: 10, code: 3, vision: 4, MCP: 3, delegate: 3)
 - **Terminal Backends**: 6/6 complete
-- **Platform Adapters**: 6/18 implemented
+- **Platform Adapters**: 7/18 implemented
 - **Unit Tests**: 37 passing (100%)
 
 ## 📦 Installation
