@@ -1,3 +1,59 @@
+Metadata-Version: 2.4
+Name: prada-agent
+Version: 0.1.0
+Summary: A self-evolving multi-platform AI agent with closed-loop learning
+Author-email: Prada Team <team@prada-agent.dev>
+License: MIT
+Keywords: ai,agent,llm,automation,multi-platform
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: openai>=1.50.0
+Requires-Dist: anthropic>=0.40.0
+Requires-Dist: google-generativeai>=0.8.0
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: websockets>=12.0
+Requires-Dist: aiosqlite>=0.20.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: paramiko>=3.4.0
+Requires-Dist: docker>=7.0.0
+Requires-Dist: python-telegram-bot>=21.0
+Requires-Dist: discord.py>=2.3.0
+Requires-Dist: slack-bolt>=1.18.0
+Requires-Dist: twilio>=8.0.0
+Requires-Dist: rich>=13.7.0
+Requires-Dist: click>=8.1.0
+Requires-Dist: prompt-toolkit>=3.0.0
+Requires-Dist: watchdog>=4.0.0
+Requires-Dist: cryptography>=42.0.0
+Requires-Dist: pydantic>=2.8.0
+Requires-Dist: jinja2>=3.1.0
+Requires-Dist: pytest>=8.0.0
+Requires-Dist: pytest-asyncio>=0.23.0
+Requires-Dist: pytest-cov>=4.0.0
+Provides-Extra: dev
+Requires-Dist: black>=24.0.0; extra == "dev"
+Requires-Dist: ruff>=0.5.0; extra == "dev"
+Requires-Dist: mypy>=1.10.0; extra == "dev"
+Requires-Dist: pre-commit>=3.7.0; extra == "dev"
+Provides-Extra: all-platforms
+Requires-Dist: matrix-nio>=0.23.0; extra == "all-platforms"
+Requires-Dist: homeassistant-api>=0.12.0; extra == "all-platforms"
+Requires-Dist: bluebubbles-api>=1.0.0; extra == "all-platforms"
+Provides-Extra: memory-providers
+Requires-Dist: chromadb>=0.5.0; extra == "memory-providers"
+Requires-Dist: neo4j>=5.0.0; extra == "memory-providers"
+Requires-Dist: weaviate-client>=4.0.0; extra == "memory-providers"
+
 # PRADA Agent
 
 > **One Agent, Everywhere; Learn Once, Evolve Continuously**
@@ -13,25 +69,6 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 5. **🔌 18+ LLM Providers**: Runtime resolution for OpenRouter/OpenAI/Anthropic/Gemini/xAI/etc.
 6. **🔄 Built-in Scheduler**: Cron jobs + batch trajectory generation + RL training integration
 7. **🔐 Security**: Command approval + credential safety + injection detection + multi-platform authorization
-
-## 🐛 Bug Fixes (Latest)
-
-### Fixed in This Session
-
-| # | Bug | Status | Fix Description |
-|---|-----|--------|-----------------|
-| 1 | `prada setup` missing module | ✅ Fixed | Created `prada_cli/setup.py` with interactive wizard |
-| 2 | `prada start` import error | ✅ Fixed | Fixed import path in `prada_cli/callbacks.py` to use dynamic sys.path |
-| 3 | AIAgent constructor mismatch | ✅ Fixed | Removed invalid `prada_home` and `callback` parameters |
-| 4 | ContextEngine abstract class instantiation | ✅ Fixed | Use `get_context_engine()` factory function instead of direct instantiation |
-| 5 | DefaultContextEngine None config | ✅ Fixed | Added null-safe config handling: `(config or {}).get()` |
-
-### All Unit Tests Passing
-
-```bash
-$ pytest tests/unit -v
-============================== 56 passed in 3.52s ==============================
-```
 
 ## ✅ Implementation Status
 
@@ -74,14 +111,12 @@ $ pytest tests/unit -v
 - **Python Files**: 51
 - **Total Lines**: ~12,000
 - **Tools**: 35 (file: 5, web: 3, browser: 10, code: 3, vision: 4, MCP: 3, delegate: 3, credential: 1, memory: 3, skill: 3, session: 3)
-- **Terminal Backends**: 6/6 complete (100%) ✅
-- **Platform Adapters**: 7/18 implemented (39%) 🟡
-- **External Memory Providers**: 3/8 implemented (38%) 🟡
-- **LLM Client Adapters**: 3/3 complete (100%) ✅ (ChatCompletions, Responses, Anthropic)
-- **Unit Tests**: 56 passing (100%) ✅
-- **Performance Module**: Complete ✅ (LRUCache, ParallelExecutor, TokenBudgetManager, BatchProcessor, PerformanceMonitor)
-- **AIAgent Core**: Complete ✅ (multi-turn conversation, tool execution, memory integration)
-- **CLI Interface**: Complete ✅ (interactive session, slash commands, approval flow)
+- **Terminal Backends**: 6/6 complete (100%)
+- **Platform Adapters**: 7/18 implemented (39%)
+- **External Memory Providers**: 3/8 implemented (38%)
+- **LLM Client Adapters**: 3/3 complete (ChatCompletions, Responses, Anthropic)
+- **Unit Tests**: 56 passing (100%)
+- **Performance Module**: Complete (LRUCache, ParallelExecutor, TokenBudgetManager, BatchProcessor, PerformanceMonitor)
 
 ## 📦 Installation
 

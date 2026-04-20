@@ -18,6 +18,13 @@ class CLIController:
     
     async def run(self, provider: Optional[str] = None, model: Optional[str] = None):
         """Run interactive CLI session"""
+        import sys
+        from pathlib import Path
+        # Add project root to path for direct module imports
+        project_root = Path(__file__).parent.parent
+        if str(project_root) not in sys.path:
+            sys.path.insert(0, str(project_root))
+        
         from run_agent import AIAgent
         from prada_cli.config import get_prada_home, load_config
         
@@ -39,11 +46,9 @@ class CLIController:
         click.echo("Type '/help' for available commands\n")
         
         agent = AIAgent(
-            prada_home=prada_home,
             provider=provider,
             model=model,
             profile=self.profile,
-            callback=self,
         )
         
         await agent.initialize()
