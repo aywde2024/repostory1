@@ -47,7 +47,17 @@ async def run_setup_wizard(provider: Optional[str] = None, model: Optional[str] 
             default=current_provider,
             type=str
         )
-        provider = choice
+        
+        # Convert numeric choice to provider name
+        if choice.isdigit():
+            idx = int(choice) - 1
+            if 0 <= idx < len(available_providers):
+                provider = available_providers[idx]
+            else:
+                click.echo(f"Error: Invalid choice. Using default: {current_provider}")
+                provider = current_provider
+        else:
+            provider = choice
     
     # Configure provider credentials
     click.echo(f"\n✓ Selected provider: {provider}")
@@ -168,15 +178,30 @@ async def run_setup_wizard(provider: Optional[str] = None, model: Optional[str] 
     external_providers = ["none", "mem0", "honcho", "openviking", "hindsight"]
     current_external = config.get("plugins", {}).get("memory_provider", "none")
     
+    click.echo("\nAvailable options:")
     for i, p in enumerate(external_providers, 1):
         marker = " ✓" if p == current_external else ""
         click.echo(f"  {i}. {p}{marker}")
     
-    external_choice = click.prompt(
-        "Select external memory provider",
-        default=current_external,
-        type=click.Choice(external_providers)
-    )
+    while True:
+        external_choice = click.prompt(
+            "Select external memory provider",
+            default=current_external,
+            type=str
+        )
+        
+        # Convert numeric choice to provider name
+        if external_choice.isdigit():
+            idx = int(external_choice) - 1
+            if 0 <= idx < len(external_providers):
+                external_choice = external_providers[idx]
+                break
+            else:
+                click.echo(f"Error: '{external_choice}' is not a valid option. Please try again.")
+        elif external_choice in external_providers:
+            break
+        else:
+            click.echo(f"Error: '{external_choice}' is not one of {', '.join(repr(p) for p in external_providers)}.")
     
     if "plugins" not in config:
         config["plugins"] = {}
