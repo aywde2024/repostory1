@@ -47,17 +47,20 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 
 ```bash
 $ pytest tests/unit -v
-============================== 37 passed in 1.83s ==============================
+============================== 56 passed in 3.56s ==============================
 ```
 
 ### Project Statistics
 
-- **Python Files**: 46
-- **Total Lines**: 10,420
+- **Python Files**: 51
+- **Total Lines**: ~12,000
 - **Tools**: 35 (file: 5, web: 3, browser: 10, code: 3, vision: 4, MCP: 3, delegate: 3, credential: 1, memory: 3, skill: 3, session: 3)
-- **Terminal Backends**: 6/6 complete
-- **Platform Adapters**: 7/18 implemented
-- **Unit Tests**: 37 passing (100%)
+- **Terminal Backends**: 6/6 complete (100%)
+- **Platform Adapters**: 7/18 implemented (39%)
+- **External Memory Providers**: 3/8 implemented (38%)
+- **LLM Client Adapters**: 3/3 complete (ChatCompletions, Responses, Anthropic)
+- **Unit Tests**: 56 passing (100%)
+- **Performance Module**: Complete (LRUCache, ParallelExecutor, TokenBudgetManager, BatchProcessor, PerformanceMonitor)
 
 ## 📦 Installation
 
@@ -334,25 +337,19 @@ prada batch compress \
 
 ### Medium Priority
 
-5. **AIAgent Enhancement**
-   - Complete LLM client implementations (ChatCompletionsClient, ResponsesClient, AnthropicClient)
-   - Multi-turn conversation optimization
-   - Context window management improvements
+5. **ACP Adapter** (VS Code/Zed/JetBrains integration)
 
-6. **ACP Adapter** (VS Code/Zed/JetBrains integration)
-
-7. **MCP Client Full Implementation**
+6. **MCP Client Full Implementation**
 
 ### Low Priority
 
-8. **Documentation**
+7. **Documentation**
    - User guide with examples
    - Best practices
    - Troubleshooting guide
 
-9. **Performance Optimization**
-   - Tool execution parallelization
-   - Memory caching improvements
+8. **Additional Platform Adapters**
+   - SMS, Mattermost, Matrix, DingTalk, WeCom, Weixin, BlueBubbles, QQBot, Webhook, API Server, Home Assistant
 
 ### Command Approval System
 
