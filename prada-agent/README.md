@@ -16,20 +16,25 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 
 ## ✅ Implementation Status
 
-### Completed Modules (100% Tested)
+### Core Modules Completion
 
 | Module | Status | Tests | Description |
 |--------|--------|-------|-------------|
-| **Tool Registry** | ✅ Complete | 9/9 passing | Auto-discovery pattern, 20+ tools registered |
+| **Tool Registry** | ✅ Complete | 9/9 passing | Auto-discovery, 27 tools registered |
 | **Memory Manager** | ✅ Complete | 8/8 passing | MEMORY.md/USER.md with add/replace/remove |
 | **Terminal Backends** | ✅ Complete | 4/4 passing | Local, Docker, SSH, Modal, Daytona, Singularity |
 | **File Tools** | ✅ Complete | 5/5 passing | read_file, write_file, patch, search_files, list_dir |
 | **Web Tools** | ✅ Complete | 3/3 passing | web_search, web_extract, http_request |
 | **Browser Tools** | ✅ Complete | 10/10 passing | navigate, click, fill, screenshot, etc. |
 | **Code Execution** | ✅ Complete | 3/3 passing | execute_code, code_analyze, code_fix |
+| **Vision Tools** | ✅ Complete | New | image_analyze, image_generate, audio_transcribe, audio_speak |
+| **MCP Tools** | ✅ Complete | New | mcp_list_tools, mcp_call_tool, mcp_list_resources |
+| **Delegate Tools** | ✅ Complete | New | delegate, subagent_status, subagent_cancel |
 | **Cron Scheduler** | ✅ Complete | 3/3 passing | cron/interval/once scheduling |
+| **Batch Runner** | ✅ Complete | New | Trajectory generation for training data |
+| **Trajectory Compressor** | ✅ Complete | New | Lossy compression for token budget |
 | **Gateway Core** | ✅ Complete | 4/4 passing | SessionStore, PlatformAdapter ABC |
-| **Platform Adapters** | 🟡 Partial | 4 implemented | Telegram, Discord, Slack, WhatsApp |
+| **Platform Adapters** | 🟡 Partial | 6 implemented | Telegram, Discord, Slack, WhatsApp, Signal, Email |
 | **Provider Resolver** | ✅ Complete | Tested | 18 LLM providers, 3 API modes |
 | **Skill System** | ✅ Complete | Tested | SKILL.md spec, progressive disclosure |
 | **External Memory** | 🟡 Partial | 3 providers | mem0, honcho, openviking |
@@ -38,8 +43,17 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 
 ```bash
 $ pytest tests/unit -v
-============================= 37 passed in 1.82s =============================
+============================== 37 passed in 1.68s ==============================
 ```
+
+### Project Statistics
+
+- **Python Files**: 41
+- **Total Lines**: 9,216
+- **Tools**: 27 (file: 5, web: 3, browser: 10, code: 3, vision: 4, MCP: 3, delegate: 3)
+- **Terminal Backends**: 6/6 complete
+- **Platform Adapters**: 6/18 implemented
+- **Unit Tests**: 37 passing (100%)
 
 ## 📦 Installation
 
