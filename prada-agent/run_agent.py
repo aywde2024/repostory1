@@ -113,8 +113,8 @@ class AIAgent:
         self._memory_manager = MemoryManager(self.prada_home)
         await self._memory_manager.initialize()
         
-        from agent.context_engine import ContextEngine
-        self._context_engine = ContextEngine(self.prada_home)
+        from agent.context_engine import get_context_engine
+        self._context_engine = get_context_engine(self.prada_home)
         
         from agent.prompt_builder import PromptBuilder
         self._prompt_builder = PromptBuilder(
