@@ -156,23 +156,34 @@ class AIAgent:
         api_mode = runtime['api_mode']
         credentials = runtime['credentials']
         base_url = runtime.get('base_url')
+        api_key = credentials.get('api_key')
+        
+        # Validate API key for non-custom providers
+        if not api_key and self.provider != "custom":
+            env_var = runtime.get('provider_info', {}).get('env_var', 'API_KEY')
+            if env_var and not env_var.endswith('?'):
+                raise RuntimeError(
+                    f"API key not found for provider '{self.provider}'. "
+                    f"Please set the {env_var} environment variable or create a .env file. "
+                    f"Example: export {env_var}=your-api-key-here"
+                )
         
         if api_mode == "anthropic_messages":
             from agent.anthropic_adapter import AnthropicClient
             self._client = AnthropicClient(
-                api_key=credentials.get('api_key'),
+                api_key=api_key,
                 base_url=base_url,
             )
         elif api_mode == "codex_responses":
             from agent.responses_adapter import ResponsesClient
             self._client = ResponsesClient(
-                api_key=credentials.get('api_key'),
+                api_key=api_key,
                 base_url=base_url,
             )
         else:  # chat_completions (default OpenAI standard)
             from agent.chat_client import ChatCompletionsClient
             self._client = ChatCompletionsClient(
-                api_key=credentials.get('api_key'),
+                api_key=api_key,
                 base_url=base_url,
                 model=self.model,
             )
@@ -229,7 +240,6 @@ class AIAgent:
             response = await self._client.complete(
                 messages=api_messages,
                 tools=available_tools,
-                model=self.model,
             )
             
             # Parse response
@@ -321,6 +331,10 @@ class AIAgent:
             await self._client.close()
         
         logger.info("PRADA Agent closed")
+    
+    async def cleanup(self) -> None:
+        """Alias for close() - cleanup resources"""
+        await self.close()
 
 
 async def main():

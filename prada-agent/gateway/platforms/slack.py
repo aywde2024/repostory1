@@ -6,13 +6,13 @@ import logging
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass
 
-from ..run import PlatformAdapter, MessageContext
+from ..run import PlatformAdapter, Message
 
 logger = logging.getLogger(__name__)
 
 
 @dataclass
-class SlackMessage(MessageContext):
+class SlackMessage(Message):
     """Slack-specific message context"""
     channel: str
     thread_ts: Optional[str] = None

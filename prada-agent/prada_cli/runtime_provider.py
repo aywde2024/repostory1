@@ -5,7 +5,10 @@ Supports 18+ LLM providers
 """
 
 import os
+import logging
 from typing import Any, Dict, Optional
+
+logger = logging.getLogger(__name__)
 
 
 PROVIDER_FAMILIES = {
@@ -176,13 +179,20 @@ def resolve_runtime_provider(provider: str, model: str) -> Dict[str, Any]:
     )
     
     # Get credentials
-    credentials = _get_credentials(provider_info)
+    credentials = _get_credentials(provider_info, provider)
     
     # Handle custom provider
     if provider == "custom":
         base_url = os.environ.get("CUSTOM_BASE_URL")
         if not base_url:
             raise ValueError("CUSTOM_BASE_URL environment variable required for custom provider")
+        
+        # For custom provider, also allow custom API mode
+        custom_api_mode = os.environ.get("CUSTOM_API_MODE", "chat_completions")
+        if custom_api_mode not in ["chat_completions", "anthropic_messages", "codex_responses"]:
+            logger.warning(f"Unknown CUSTOM_API_MODE '{custom_api_mode}', defaulting to chat_completions")
+            custom_api_mode = "chat_completions"
+        api_mode = custom_api_mode
     else:
         base_url = provider_info.get('base_url')
     
@@ -234,7 +244,7 @@ def _determine_api_mode(
     return "chat_completions"
 
 
-def _get_credentials(provider_info: Dict) -> Dict[str, Optional[str]]:
+def _get_credentials(provider_info: Dict, provider: str = None) -> Dict[str, Optional[str]]:
     """Get credentials for provider from environment"""
     env_var = provider_info.get('env_var')
     
@@ -250,6 +260,14 @@ def _get_credentials(provider_info: Dict) -> Dict[str, Optional[str]]:
             credentials['api_key'] = os.environ.get(env_var)
         else:
             credentials['api_key'] = os.environ.get(env_var)
+    
+    # Check if required credential is missing
+    if credentials['api_key'] is None and not provider_info.get('oauth_flow'):
+        if env_var and not env_var.endswith('?'):
+            # For non-custom providers, log warning about missing credentials
+            if provider != "custom":
+                logger.warning(f"Missing required environment variable: {env_var}")
+                logger.warning(f"Please set {env_var} in your .env file or environment")
     
     # Special handling for OAuth providers
     if provider_info.get('oauth_flow'):
