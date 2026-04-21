@@ -81,6 +81,9 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 | 3 | AIAgent constructor mismatch | ✅ Fixed | Removed invalid `prada_home` and `callback` parameters |
 | 4 | ContextEngine abstract class instantiation | ✅ Fixed | Use `get_context_engine()` factory function instead of direct instantiation |
 | 5 | DefaultContextEngine None config | ✅ Fixed | Added null-safe config handling: `(config or {}).get()` |
+| 6 | Setup wizard numeric choice bug | ✅ Fixed | Added numeric-to-name conversion for provider and memory provider selection |
+| 7 | Provider "1" unknown error | ✅ Fixed | Expanded DEFAULT_CONFIG providers list to include all 19 supported providers (nous, xai, gemini, moonshot, minimax, zhipu, groq, deepseek, mistral, together, fireworks, cohere, ollama, vllm, lmstudio, custom) |
+| 8 | runtime_provider alias resolution | ✅ Verified | Aliases like "glm" and "z.ai" correctly resolve to "zhipu" provider |
 
 ### All Unit Tests Passing
 
