@@ -48,6 +48,10 @@ class WebhookAdapter(PlatformAdapter):
         if self._server:
             await self._server.cleanup()
     
+    async def cleanup(self) -> None:
+        """Alias for stop() - cleanup resources"""
+        await self.stop()
+    
     async def _handle_webhook(self, request) -> web.Response:
         """Handle incoming webhook POST"""
         from aiohttp import web

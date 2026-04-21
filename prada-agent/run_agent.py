@@ -321,6 +321,10 @@ class AIAgent:
             await self._client.close()
         
         logger.info("PRADA Agent closed")
+    
+    async def cleanup(self) -> None:
+        """Alias for close() - cleanup resources"""
+        await self.close()
 
 
 async def main():

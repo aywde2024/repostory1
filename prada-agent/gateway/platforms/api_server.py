@@ -52,6 +52,10 @@ class APIServerAdapter(PlatformAdapter):
         if self._server:
             await self._server.cleanup()
     
+    async def cleanup(self) -> None:
+        """Alias for stop() - cleanup resources"""
+        await self.stop()
+    
     def _verify_auth(self, request) -> bool:
         """Verify API key if configured"""
         if not self.api_key:
