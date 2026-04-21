@@ -126,6 +126,14 @@ class AIAgent:
         # Initialize LLM client
         await self._init_client()
         
+        # Validate API key is present
+        if not self._client.api_key:
+            raise RuntimeError(
+                f"API key not found for provider '{self.provider}'. "
+                f"Please set the required environment variable (e.g., OPENROUTER_API_KEY) "
+                f"or create a .env file in ~/.prada/ or project root."
+            )
+        
         logger.info("PRADA Agent initialized successfully")
     
     async def _load_config(self) -> None:

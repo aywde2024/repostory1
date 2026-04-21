@@ -5,7 +5,10 @@ Supports 18+ LLM providers
 """
 
 import os
+import logging
 from typing import Any, Dict, Optional
+
+logger = logging.getLogger(__name__)
 
 
 PROVIDER_FAMILIES = {
@@ -250,6 +253,12 @@ def _get_credentials(provider_info: Dict) -> Dict[str, Optional[str]]:
             credentials['api_key'] = os.environ.get(env_var)
         else:
             credentials['api_key'] = os.environ.get(env_var)
+    
+    # Check if required credential is missing
+    if credentials['api_key'] is None and not provider_info.get('oauth_flow'):
+        if env_var and not env_var.endswith('?'):
+            logger.warning(f"Missing required environment variable: {env_var}")
+            logger.warning(f"Please set {env_var} in your .env file or environment")
     
     # Special handling for OAuth providers
     if provider_info.get('oauth_flow'):
