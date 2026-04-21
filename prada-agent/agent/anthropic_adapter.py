@@ -73,6 +73,10 @@ class AnthropicClient:
             await self._client.aclose()
             self._client = None
     
+    async def cleanup(self) -> None:
+        """Alias for close() - cleanup resources"""
+        await self.close()
+    
     async def complete(
         self,
         messages: List[Dict[str, Any]],

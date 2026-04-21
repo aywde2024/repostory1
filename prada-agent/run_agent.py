@@ -229,7 +229,6 @@ class AIAgent:
             response = await self._client.complete(
                 messages=api_messages,
                 tools=available_tools,
-                model=self.model,
             )
             
             # Parse response

@@ -31,6 +31,8 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 | 9 | **AIAgent missing cleanup() method** | ✅ Fixed | Added `cleanup()` method as alias for `close()` in `run_agent.py` |
 | 10 | **APIServerAdapter missing cleanup()** | ✅ Fixed | Added `cleanup()` method to `gateway/platforms/api_server.py` |
 | 11 | **WebhookAdapter missing cleanup()** | ✅ Fixed | Added `cleanup()` method to `gateway/platforms/webhook.py` |
+| 12 | **ChatCompletionsClient unexpected `model` argument** | ✅ Fixed | Removed redundant `model=self.model` parameter from `run_agent.py:232` - model is already set in client constructor |
+| 13 | **LLM client adapters missing cleanup() method** | ✅ Fixed | Added `cleanup()` method to `ChatCompletionsClient`, `AnthropicClient`, and `ResponsesClient` |
 
 ### All Unit Tests Passing
 
