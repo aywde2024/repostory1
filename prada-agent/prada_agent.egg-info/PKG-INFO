@@ -1,3 +1,59 @@
+Metadata-Version: 2.4
+Name: prada-agent
+Version: 0.1.0
+Summary: A self-evolving multi-platform AI agent with closed-loop learning
+Author-email: Prada Team <team@prada-agent.dev>
+License: MIT
+Keywords: ai,agent,llm,automation,multi-platform
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: openai>=1.50.0
+Requires-Dist: anthropic>=0.40.0
+Requires-Dist: google-generativeai>=0.8.0
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: websockets>=12.0
+Requires-Dist: aiosqlite>=0.20.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: paramiko>=3.4.0
+Requires-Dist: docker>=7.0.0
+Requires-Dist: python-telegram-bot>=21.0
+Requires-Dist: discord.py>=2.3.0
+Requires-Dist: slack-bolt>=1.18.0
+Requires-Dist: twilio>=8.0.0
+Requires-Dist: rich>=13.7.0
+Requires-Dist: click>=8.1.0
+Requires-Dist: prompt-toolkit>=3.0.0
+Requires-Dist: watchdog>=4.0.0
+Requires-Dist: cryptography>=42.0.0
+Requires-Dist: pydantic>=2.8.0
+Requires-Dist: jinja2>=3.1.0
+Requires-Dist: pytest>=8.0.0
+Requires-Dist: pytest-asyncio>=0.23.0
+Requires-Dist: pytest-cov>=4.0.0
+Provides-Extra: dev
+Requires-Dist: black>=24.0.0; extra == "dev"
+Requires-Dist: ruff>=0.5.0; extra == "dev"
+Requires-Dist: mypy>=1.10.0; extra == "dev"
+Requires-Dist: pre-commit>=3.7.0; extra == "dev"
+Provides-Extra: all-platforms
+Requires-Dist: matrix-nio>=0.23.0; extra == "all-platforms"
+Requires-Dist: homeassistant-api>=0.12.0; extra == "all-platforms"
+Requires-Dist: bluebubbles-api>=1.0.0; extra == "all-platforms"
+Provides-Extra: memory-providers
+Requires-Dist: chromadb>=0.5.0; extra == "memory-providers"
+Requires-Dist: neo4j>=5.0.0; extra == "memory-providers"
+Requires-Dist: weaviate-client>=4.0.0; extra == "memory-providers"
+
 # PRADA Agent
 
 > **One Agent, Everywhere; Learn Once, Evolve Continuously**
@@ -25,9 +81,6 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 | 3 | AIAgent constructor mismatch | ✅ Fixed | Removed invalid `prada_home` and `callback` parameters |
 | 4 | ContextEngine abstract class instantiation | ✅ Fixed | Use `get_context_engine()` factory function instead of direct instantiation |
 | 5 | DefaultContextEngine None config | ✅ Fixed | Added null-safe config handling: `(config or {}).get()` |
-| 6 | Setup wizard numeric choice bug | ✅ Fixed | Added numeric-to-name conversion for provider and memory provider selection |
-| 7 | Provider "1" unknown error | ✅ Fixed | Expanded DEFAULT_CONFIG providers list to include all 19 supported providers (nous, xai, gemini, moonshot, minimax, zhipu, groq, deepseek, mistral, together, fireworks, cohere, ollama, vllm, lmstudio, custom) |
-| 8 | runtime_provider alias resolution | ✅ Verified | Aliases like "glm" and "z.ai" correctly resolve to "zhipu" provider |
 
 ### All Unit Tests Passing
 

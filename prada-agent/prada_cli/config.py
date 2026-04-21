@@ -62,6 +62,70 @@ DEFAULT_CONFIG = {
             "api_key_env": "OPENAI_API_KEY",
             "base_url": "https://api.openai.com/v1",
         },
+        "nous": {
+            "api_key_env": "NOUS_API_KEY",
+            "base_url": "https://api.nousresearch.com/v1",
+        },
+        "xai": {
+            "api_key_env": "XAI_API_KEY",
+            "base_url": "https://api.x.ai/v1",
+        },
+        "gemini": {
+            "api_key_env": "GEMINI_API_KEY",
+            "base_url": "https://generativelanguage.googleapis.com/v1beta",
+        },
+        "moonshot": {
+            "api_key_env": "MOONSHOT_API_KEY",
+            "base_url": "https://api.moonshot.cn/v1",
+        },
+        "minimax": {
+            "api_key_env": "MINIMAX_API_KEY",
+            "base_url": "https://api.minimax.chat/v1",
+        },
+        "zhipu": {
+            "api_key_env": "ZHIPU_API_KEY",
+            "base_url": "https://open.bigmodel.cn/api/paas/v4",
+        },
+        "groq": {
+            "api_key_env": "GROQ_API_KEY",
+            "base_url": "https://api.groq.com/openai/v1",
+        },
+        "deepseek": {
+            "api_key_env": "DEEPSEEK_API_KEY",
+            "base_url": "https://api.deepseek.com/v1",
+        },
+        "mistral": {
+            "api_key_env": "MISTRAL_API_KEY",
+            "base_url": "https://api.mistral.ai/v1",
+        },
+        "together": {
+            "api_key_env": "TOGETHER_API_KEY",
+            "base_url": "https://api.together.xyz/v1",
+        },
+        "fireworks": {
+            "api_key_env": "FIREWORKS_API_KEY",
+            "base_url": "https://api.fireworks.ai/inference/v1",
+        },
+        "cohere": {
+            "api_key_env": "COHERE_API_KEY",
+            "base_url": "https://api.cohere.com/v1",
+        },
+        "ollama": {
+            "api_key_env": None,
+            "base_url": "http://localhost:11434/v1",
+        },
+        "vllm": {
+            "api_key_env": "VLLM_API_KEY",
+            "base_url": "http://localhost:8000/v1",
+        },
+        "lmstudio": {
+            "api_key_env": None,
+            "base_url": "http://localhost:1234/v1",
+        },
+        "custom": {
+            "api_key_env": "CUSTOM_API_KEY",
+            "base_url": None,
+        },
     },
     "plugins": {
         "memory_provider": None,

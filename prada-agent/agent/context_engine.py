@@ -111,8 +111,8 @@ class DefaultContextEngine(ContextEngine):
     
     def __init__(self, prada_home: Path, config: Optional[Dict] = None):
         super().__init__(prada_home, config)
-        self.keep_recent_turns = config.get('keep_recent_turns', 5)
-        self.summary_model = config.get('summary_model', 'gemini-1.5-flash')
+        self.keep_recent_turns = (config or {}).get('keep_recent_turns', 5)
+        self.summary_model = (config or {}).get('summary_model', 'gemini-1.5-flash')
     
     async def compress(
         self,
