@@ -36,12 +36,13 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 | 14 | **Missing API key validation** | ✅ Fixed | Added API key validation in `run_agent.py` initialization with helpful error message |
 | 15 | **Missing credential warning logs** | ✅ Fixed | Added logging warnings in `runtime_provider.py` when required env vars are missing |
 | 16 | **OpenRouter/Custom provider resolution bugs** | ✅ Fixed | Fixed `_get_credentials()` signature to accept provider param, added CUSTOM_API_MODE support, improved error messages for missing API keys |
+| 17 | **HTTP ConnectTimeout errors** | ✅ Fixed | Enhanced HTTP client configuration in all LLM adapters (chat_client.py, anthropic_adapter.py, responses_adapter.py): increased connect timeout (10s→30s), added read/write timeouts (60s/30s), added explicit transport layer with retries and SSL verification, added User-Agent header for API compatibility |
 
 ### All Unit Tests Passing
 
 ```bash
 $ pytest tests/unit -v
-============================== 56 passed in 3.52s ==============================
+============================== 70 passed in 6.69s ==============================
 ```
 
 ## ✅ Implementation Status
@@ -77,7 +78,7 @@ $ pytest tests/unit -v
 
 ```bash
 $ pytest tests/unit -v
-============================== 56 passed in 3.56s ==============================
+============================== 70 passed in 6.69s ==============================
 ```
 
 ### Project Statistics

@@ -44,15 +44,24 @@ class ChatCompletionsClient:
     async def _get_client(self) -> httpx.AsyncClient:
         """Get or create HTTP client with proper configuration"""
         if self._client is None or self._client.is_closed:
+            # Create transport with explicit SSL and no proxy interference
+            transport = httpx.AsyncHTTPTransport(
+                retries=self.max_retries,
+                verify=True,
+            )
+            
             self._client = httpx.AsyncClient(
                 base_url=self.base_url,
-                timeout=httpx.Timeout(self.timeout, connect=10.0),
+                timeout=httpx.Timeout(self.timeout, connect=30.0, read=60.0, write=30.0),
                 headers={
                     "Authorization": f"Bearer {self.api_key}",
                     "Content-Type": "application/json",
+                    # Add User-Agent for better API compatibility
+                    "User-Agent": "PRADA-Agent/1.0",
                 },
                 # Keepalive settings to prevent connection leaks
                 limits=httpx.Limits(max_keepalive_connections=10, max_connections=50),
+                transport=transport,
             )
         return self._client
     
