@@ -53,17 +53,26 @@ class AnthropicClient:
                 "x-api-key": self.api_key,
                 "Content-Type": "application/json",
                 "anthropic-version": self.api_version,
+                # Add User-Agent for better API compatibility
+                "User-Agent": "PRADA-Agent/1.0",
             }
             
             # Add beta features header if caching enabled
             if self.enable_prompt_caching:
                 headers["anthropic-beta"] = "prompt-caching-2024-07-31"
             
+            # Create transport with explicit SSL and no proxy interference
+            transport = httpx.AsyncHTTPTransport(
+                retries=self.max_retries,
+                verify=True,
+            )
+            
             self._client = httpx.AsyncClient(
                 base_url=self.base_url,
-                timeout=httpx.Timeout(self.timeout, connect=10.0),
+                timeout=httpx.Timeout(self.timeout, connect=30.0, read=60.0, write=30.0),
                 headers=headers,
                 limits=httpx.Limits(max_keepalive_connections=10, max_connections=50),
+                transport=transport,
             )
         return self._client
     

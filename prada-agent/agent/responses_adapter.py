@@ -50,17 +50,26 @@ class ResponsesClient:
             headers = {
                 "Authorization": f"Bearer {self.api_key}",
                 "Content-Type": "application/json",
+                # Add User-Agent for better API compatibility
+                "User-Agent": "PRADA-Agent/1.0",
             }
             
             # xAI specific: add conversation ID header if needed
             if "x.ai" in self.base_url:
                 headers["x-grok-conv-id"] = f"conv_{asyncio.get_event_loop().time()}"
             
+            # Create transport with explicit SSL and no proxy interference
+            transport = httpx.AsyncHTTPTransport(
+                retries=self.max_retries,
+                verify=True,
+            )
+            
             self._client = httpx.AsyncClient(
                 base_url=self.base_url,
-                timeout=httpx.Timeout(self.timeout, connect=10.0),
+                timeout=httpx.Timeout(self.timeout, connect=30.0, read=60.0, write=30.0),
                 headers=headers,
                 limits=httpx.Limits(max_keepalive_connections=10, max_connections=50),
+                transport=transport,
             )
         return self._client
     
