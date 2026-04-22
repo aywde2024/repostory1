@@ -164,25 +164,36 @@ def resolve_runtime_provider(provider: str, model: str) -> Dict[str, Any]:
     - model: model identifier
     """
     # Normalize provider (handle aliases)
+    original_provider = provider
     provider = provider.lower()
     provider_info = _get_provider_info(provider)
     
     if not provider_info:
         raise ValueError(f"Unknown provider: {provider}")
     
+    # Get the canonical provider name (resolve aliases)
+    canonical_provider = provider
+    if original_provider.lower() not in PROVIDER_FAMILIES:
+        # Find canonical name for alias
+        for prov_name, prov_info in PROVIDER_FAMILIES.items():
+            aliases = prov_info.get('aliases', [])
+            if provider in aliases:
+                canonical_provider = prov_name
+                break
+    
     # Determine API mode
     api_mode = _determine_api_mode(
-        provider=provider,
+        provider=canonical_provider,
         base_url=provider_info.get('base_url', ''),
         model=model,
         available_modes=provider_info.get('api_modes', ['chat_completions']),
     )
     
     # Get credentials
-    credentials = _get_credentials(provider_info, provider)
+    credentials = _get_credentials(provider_info, canonical_provider)
     
     # Handle custom provider
-    if provider == "custom":
+    if canonical_provider == "custom":
         base_url = os.environ.get("CUSTOM_BASE_URL")
         if not base_url:
             raise ValueError("CUSTOM_BASE_URL environment variable required for custom provider")
@@ -200,7 +211,7 @@ def resolve_runtime_provider(provider: str, model: str) -> Dict[str, Any]:
         "api_mode": api_mode,
         "credentials": credentials,
         "base_url": base_url,
-        "provider": provider,
+        "provider": canonical_provider,
         "model": model,
         "provider_info": provider_info,
     }

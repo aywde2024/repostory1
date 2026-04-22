@@ -82,17 +82,18 @@ $ pytest tests/unit -v
 
 ### Project Statistics
 
-- **Python Files**: 51+
-- **Total Lines**: ~14,000+
+- **Python Files**: 52+
+- **Total Lines**: ~14,500+
 - **Tools**: 35 (file: 5, web: 3, browser: 10, code: 3, vision: 4, MCP: 3, delegate: 3, credential: 1, memory: 3, skill: 3, session: 3)
 - **Terminal Backends**: 6/6 complete (100%) ✅
 - **Platform Adapters**: 18/18 complete (100%) ✅
 - **External Memory Providers**: 8/8 complete (100%) ✅
 - **LLM Client Adapters**: 3/3 complete (100%) ✅ (ChatCompletions, Responses, Anthropic)
-- **Unit Tests**: 56 passing (100%) ✅
+- **Unit Tests**: 70 passing (100%) ✅ (+14 OpenRouter API tests)
 - **Performance Module**: Complete ✅ (LRUCache, ParallelExecutor, TokenBudgetManager, BatchProcessor, PerformanceMonitor)
 - **AIAgent Core**: Complete ✅ (multi-turn conversation, tool execution, memory integration)
 - **CLI Interface**: Complete ✅ (interactive session, slash commands, approval flow)
+- **Provider Resolution**: 19 providers + aliases ✅ (OpenRouter, OpenAI, Anthropic, Gemini, xAI, etc.)
 
 ## 📦 Installation
 
@@ -331,15 +332,13 @@ prada batch compress \
 | Missing memory_tools module | ✅ Fixed | Created tools/memory_tools.py |
 | Missing skill_tools module | ✅ Fixed | Created tools/skill_tools.py |
 | Missing session_tools module | ✅ Fixed | Created tools/session_tools.py |
+| OpenRouter alias resolution bug | ✅ Fixed | Fixed `resolve_runtime_provider()` to return canonical provider name for aliases (e.g., "or" → "openrouter", "glm" → "zhipu") |
 
 ### Known Issues
 
 | Issue | Priority | Description |
 |-------|----------|-------------|
 | AIAgent approval callback | Medium | `_request_approval()` needs proper callback implementation for gateway platforms |
-| ChatCompletionsClient missing | Low | Agent client adapters need full implementation |
-| ResponsesClient missing | Low | xAI/OpenAI Responses API adapter needed |
-| AnthropicClient missing | Low | Anthropic Messages API adapter needed |
 
 ## 🔜 Remaining Work
 
@@ -388,7 +387,45 @@ prada batch compress \
 
 ---
 
-## ✅ Completed in This Session
+## ✅ Completed in This Session (Latest)
+
+### OpenRouter API Integration Tests
+
+| Test Category | Tests | Status | Description |
+|---------------|-------|--------|-------------|
+| Provider Resolution | 4/4 | ✅ Passing | Basic resolution, alias handling, env var validation, API modes |
+| Client Functionality | 4/4 | ✅ Passing | Initialization, cleanup, request structure, tool calling |
+| AIAgent Integration | 2/2 | ✅ Passing | Agent initialization, client selection |
+| Error Handling | 2/2 | ✅ Passing | HTTP retry logic, missing API key warnings |
+| Model Listings | 2/2 | ✅ Passing | Provider models, available providers list |
+
+**Total: 14/14 new tests passing (100%)** ✅
+
+**Test file**: `tests/unit/test_openrouter_api.py`
+
+### Bug Fixes
+
+| # | Bug | Status | Fix Description |
+|-----|--------|-------------|-----------------|
+| 17 | OpenRouter alias resolution | ✅ Fixed | Updated `resolve_runtime_provider()` to return canonical provider name when using aliases (e.g., "or" → "openrouter", "glm" → "zhipu") |
+
+### All Unit Tests Passing
+
+```bash
+$ pytest tests/unit -v
+============================== 70 passed in 6.64s ==============================
+```
+
+**Breakdown:**
+- test_core.py: 19 tests
+- test_memory_manager.py: 8 tests  
+- test_performance.py: 19 tests
+- test_tool_registry.py: 9 tests
+- test_openrouter_api.py: 14 tests **(NEW)**
+
+---
+
+## ✅ Implementation Status (Overall)
 
 ### Platform Adapters (11 New)
 
