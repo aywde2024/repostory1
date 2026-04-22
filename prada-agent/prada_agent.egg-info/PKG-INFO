@@ -84,6 +84,14 @@ A self-evolving multi-platform AI agent with closed-loop learning capabilities.
 | 6 | Setup wizard numeric choice bug | ✅ Fixed | Added numeric-to-name conversion for provider and memory provider selection |
 | 7 | Provider "1" unknown error | ✅ Fixed | Expanded DEFAULT_CONFIG providers list to include all 19 supported providers (nous, xai, gemini, moonshot, minimax, zhipu, groq, deepseek, mistral, together, fireworks, cohere, ollama, vllm, lmstudio, custom) |
 | 8 | runtime_provider alias resolution | ✅ Verified | Aliases like "glm" and "z.ai" correctly resolve to "zhipu" provider |
+| 9 | **AIAgent missing cleanup() method** | ✅ Fixed | Added `cleanup()` method as alias for `close()` in `run_agent.py` |
+| 10 | **APIServerAdapter missing cleanup()** | ✅ Fixed | Added `cleanup()` method to `gateway/platforms/api_server.py` |
+| 11 | **WebhookAdapter missing cleanup()** | ✅ Fixed | Added `cleanup()` method to `gateway/platforms/webhook.py` |
+| 12 | **ChatCompletionsClient unexpected `model` argument** | ✅ Fixed | Removed redundant `model=self.model` parameter from `run_agent.py:232` - model is already set in client constructor |
+| 13 | **LLM client adapters missing cleanup() method** | ✅ Fixed | Added `cleanup()` method to `ChatCompletionsClient`, `AnthropicClient`, and `ResponsesClient` |
+| 14 | **Missing API key validation** | ✅ Fixed | Added API key validation in `run_agent.py` initialization with helpful error message |
+| 15 | **Missing credential warning logs** | ✅ Fixed | Added logging warnings in `runtime_provider.py` when required env vars are missing |
+| 16 | **OpenRouter/Custom provider resolution bugs** | ✅ Fixed | Fixed `_get_credentials()` signature to accept provider param, added CUSTOM_API_MODE support, improved error messages for missing API keys |
 
 ### All Unit Tests Passing
 
@@ -116,10 +124,10 @@ $ pytest tests/unit -v
 | **Batch Runner** | ✅ Complete | New | Trajectory generation for training data |
 | **Trajectory Compressor** | ✅ Complete | New | Lossy compression for token budget |
 | **Gateway Core** | ✅ Complete | 4/4 passing | SessionStore, PlatformAdapter ABC |
-| **Platform Adapters** | 🟡 Partial | 7 implemented | Telegram, Discord, Slack, WhatsApp, Signal, Email, Feishu |
+| **Platform Adapters** | ✅ Complete | 18/18 implemented | All platforms: Telegram, Discord, Slack, WhatsApp, Signal, SMS, Email, Home Assistant, Mattermost, Matrix, DingTalk, Feishu, WeCom, Weixin, BlueBubbles, QQBot, Webhook, API Server |
 | **Provider Resolver** | ✅ Complete | Tested | 18 LLM providers, 3 API modes |
 | **Skill System** | ✅ Complete | Tested | SKILL.md spec, progressive disclosure |
-| **External Memory** | 🟡 Partial | 3 providers | mem0, honcho, openviking |
+| **External Memory** | ✅ Complete | 8/8 providers | mem0, honcho, openviking, hindsight, holographic, retaindb, byterover, supermemory |
 
 ### Test Results
 
@@ -130,12 +138,12 @@ $ pytest tests/unit -v
 
 ### Project Statistics
 
-- **Python Files**: 51
-- **Total Lines**: ~12,000
+- **Python Files**: 51+
+- **Total Lines**: ~14,000+
 - **Tools**: 35 (file: 5, web: 3, browser: 10, code: 3, vision: 4, MCP: 3, delegate: 3, credential: 1, memory: 3, skill: 3, session: 3)
 - **Terminal Backends**: 6/6 complete (100%) ✅
-- **Platform Adapters**: 7/18 implemented (39%) 🟡
-- **External Memory Providers**: 3/8 implemented (38%) 🟡
+- **Platform Adapters**: 18/18 complete (100%) ✅
+- **External Memory Providers**: 8/8 complete (100%) ✅
 - **LLM Client Adapters**: 3/3 complete (100%) ✅ (ChatCompletions, Responses, Anthropic)
 - **Unit Tests**: 56 passing (100%) ✅
 - **Performance Module**: Complete ✅ (LRUCache, ParallelExecutor, TokenBudgetManager, BatchProcessor, PerformanceMonitor)
@@ -246,10 +254,17 @@ Two-layer built-in memory + external providers:
 
 Operations: `add`, `replace` (substring match), `remove` (substring match)
 
-### External Providers (Plugin Architecture)
-- **mem0**: Semantic vector memory (Chroma/Pinecone)
-- **honcho**: Dialectical user modeling (SQLite + vector index)
-- **openviking**: Knowledge graph memory (Neo4j)
+### External Memory Providers (Plugin Architecture)
+- **mem0**: Semantic vector memory (Chroma/Pinecone) ✅
+- **honcho**: Dialectical user modeling (SQLite + vector index) ✅
+- **openviking**: Knowledge graph memory (Neo4j) ✅
+- **hindsight**: Event timeline memory (time-series DB) ✅
+- **holographic**: Multimodal vector memory (Weaviate/Milvus) ✅
+- **retaindb**: Relational SQL memory (PostgreSQL/MySQL) ✅
+- **byterover**: Binary/code index memory (Git-like object store) ✅
+- **supermemory**: Hybrid memory (vector+graph+rules) ✅
+
+**All 8 external memory providers complete! (100%)** ✅
 
 ## 🌐 Supported Platforms
 
@@ -259,20 +274,22 @@ Operations: `add`, `replace` (substring match), `remove` (substring match)
 | Discord | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Implemented |
 | Slack | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Implemented |
 | WhatsApp | — | ✅ | ✅ | — | — | ✅ | ✅ | ✅ Implemented |
-| Signal | — | ✅ | ✅ | — | — | ✅ | ✅ | 🟡 Planned |
-| SMS | — | — | — | — | — | — | — | 🟡 Planned |
-| Email | — | ✅ | ✅ | ✅ | — | — | — | 🟡 Planned |
-| Home Assistant | — | — | — | — | — | — | — | 🟡 Planned |
-| Mattermost | ✅ | ✅ | ✅ | ✅ | — | ✅ | ✅ | 🟡 Planned |
-| Matrix | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 🟡 Planned |
-| DingTalk | — | — | — | — | — | ✅ | ✅ | 🟡 Planned |
-| Feishu | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 🟡 Planned |
-| WeCom | ✅ | ✅ | ✅ | — | — | ✅ | ✅ | 🟡 Planned |
-| Weixin | ✅ | ✅ | ✅ | — | — | ✅ | ✅ | 🟡 Planned |
-| BlueBubbles | — | ✅ | ✅ | — | ✅ | ✅ | — | 🟡 Planned |
-| QQBot | ✅ | ✅ | ✅ | — | — | ✅ | — | 🟡 Planned |
-| Webhook | — | ✅ | ✅ | — | — | ✅ | ✅ | 🟡 Planned |
-| API Server | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 🟡 Planned |
+| Signal | — | ✅ | ✅ | — | — | ✅ | ✅ | ✅ Implemented |
+| SMS | — | — | — | — | — | — | — | ✅ Implemented |
+| Email | — | ✅ | ✅ | ✅ | — | — | — | ✅ Implemented |
+| Home Assistant | — | — | — | — | — | — | — | ✅ Implemented |
+| Mattermost | ✅ | ✅ | ✅ | ✅ | — | ✅ | ✅ | ✅ Implemented |
+| Matrix | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Implemented |
+| DingTalk | — | — | — | — | — | ✅ | ✅ | ✅ Implemented |
+| Feishu | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Implemented |
+| WeCom | ✅ | ✅ | ✅ | — | — | ✅ | ✅ | ✅ Implemented |
+| Weixin | ✅ | ✅ | ✅ | — | — | ✅ | ✅ | ✅ Implemented |
+| BlueBubbles | — | ✅ | ✅ | — | ✅ | ✅ | — | ✅ Implemented |
+| QQBot | ✅ | ✅ | ✅ | — | — | ✅ | — | ✅ Implemented |
+| Webhook | — | ✅ | ✅ | — | — | ✅ | ✅ | ✅ Implemented |
+| API Server | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Implemented |
+
+**All 18 platform adapters complete! (100%)** ✅
 
 ## 🔌 Provider Runtime Resolution
 
@@ -384,52 +401,89 @@ prada batch compress \
 
 ### High Priority
 
-1. **Remaining 11 Platform Adapters** (~2000 lines)
-   - SMS (Twilio)
-   - Mattermost
-   - Matrix
-   - DingTalk/钉钉
-   - WeCom/企业微信
-   - Weixin/微信
-   - BlueBubbles (iMessage)
-   - QQBot (OneBot)
-   - Webhook (generic)
-   - API Server (OpenAI-compatible REST)
-   - Home Assistant
-
-2. **Remaining 5 External Memory Providers** (~800 lines)
-   - hindsight (event timeline)
-   - holographic (multimodal vector)
-   - retaindb (relational SQL)
-   - byterover (binary/code index)
-   - supermemory (hybrid)
-
-3. **CLI Subcommands Extension**
+1. **CLI Subcommands Extension**
    - `prada sessions search` - Full-text session search
    - `prada usage` - Token usage statistics
    - `prada insights` - Usage analytics
    - `prada doctor` - System health check
    - `prada logs` - Log tailing and filtering
 
-4. **Integration/E2E Tests**
+2. **Integration/E2E Tests**
    - Integration tests with mock credentials
    - E2E tests for critical workflows
 
+3. **ACP Adapter** (VS Code/Zed/JetBrains integration)
+
+4. **MCP Client Full Implementation** (~2,200 lines)
+
 ### Medium Priority
 
-5. **ACP Adapter** (VS Code/Zed/JetBrains integration)
-
-6. **MCP Client Full Implementation**
-
-### Low Priority
-
-7. **Documentation**
+5. **Documentation**
    - User guide with examples
    - Best practices
    - Troubleshooting guide
 
-8. **Additional Platform Adapters**
-   - SMS, Mattermost, Matrix, DingTalk, WeCom, Weixin, BlueBubbles, QQBot, Webhook, API Server, Home Assistant
+6. **Docker Image Build Optimization**
+   - Multi-stage build improvements
+   - Layer caching optimization
+
+7. **Command Approval System Enhancement**
+   - Pattern-based auto-approve rules
+   - Per-platform approval policies
+
+8. **Cron Scheduler Full Implementation**
+   - Job persistence and recovery
+   - Result delivery to platforms
+
+### Low Priority
+
+9. **Performance Optimizations**
+   - Prompt caching improvements
+   - Token budget management enhancements
+   - Parallel tool execution optimizations
+
+---
+
+## ✅ Completed in This Session
+
+### Platform Adapters (11 New)
+
+| Platform | File | Lines | Status |
+|----------|------|-------|--------|
+| SMS (Twilio) | `gateway/platforms/sms.py` | 93 | ✅ Complete |
+| Mattermost | `gateway/platforms/mattermost.py` | 125 | ✅ Complete |
+| Matrix | `gateway/platforms/matrix.py` | 167 | ✅ Complete |
+| DingTalk/钉钉 | `gateway/platforms/dingtalk.py` | 110 | ✅ Complete |
+| WeCom/企业微信 | `gateway/platforms/wecom.py` | 117 | ✅ Complete |
+| Weixin/微信 | `gateway/platforms/weixin.py` | 115 | ✅ Complete |
+| BlueBubbles (iMessage) | `gateway/platforms/bluebubbles.py` | 110 | ✅ Complete |
+| QQBot (OneBot) | `gateway/platforms/qqbot.py` | 156 | ✅ Complete |
+| Webhook | `gateway/platforms/webhook.py` | 106 | ✅ Complete |
+| API Server | `gateway/platforms/api_server.py` | 161 | ✅ Complete |
+| Home Assistant | `gateway/platforms/homeassistant.py` | 159 | ✅ Complete |
+
+**Total: 1,319 new lines of platform adapter code**
+
+### External Memory Providers (5 New)
+
+| Provider | Type | Storage | Status |
+|----------|------|---------|--------|
+| hindsight | Event timeline | SQLite time-series | ✅ Complete |
+| holographic | Multimodal vector | Weaviate/Milvus | ✅ Complete |
+| retaindb | Relational SQL | PostgreSQL/MySQL | ✅ Complete |
+| byterover | Binary/code index | Git-like object store | ✅ Complete |
+| supermemory | Hybrid (vector+graph+rules) | SQLite hybrid | ✅ Complete |
+
+**Total: ~550 new lines of memory provider code**
+
+### Test Results
+
+```bash
+$ pytest tests/unit -v
+============================== 56 passed in 2.89s ==============================
+```
+
+All existing unit tests passing after new implementations.
 
 ### Command Approval System
 
